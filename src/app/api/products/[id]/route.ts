@@ -2,10 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { getUserFromToken, getTokenFromRequest } from '@/lib/auth';
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, context: any) {
   try {
     const token = getTokenFromRequest(request);
     const user = getUserFromToken(token);
@@ -17,7 +14,7 @@ export async function PATCH(
       );
     }
 
-    const productId = Number.parseInt(params.id);
+    const productId = Number.parseInt(context.params.id);
 
     if (isNaN(productId)) {
       return NextResponse.json(
@@ -62,10 +59,7 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: any) {
   try {
     const token = getTokenFromRequest(request);
     const user = getUserFromToken(token);
@@ -77,7 +71,7 @@ export async function DELETE(
       );
     }
 
-    const productId = Number.parseInt(params.id);
+    const productId = Number.parseInt(context.params.id);
 
     if (isNaN(productId)) {
       return NextResponse.json(

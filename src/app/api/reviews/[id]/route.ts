@@ -3,10 +3,7 @@ import { query } from '@/lib/db';
 import { verifyToken } from '@/lib/auth';
 
 // DELETE - Eliminar reseña (solo admin)
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: any) {
   try {
     const token = request.headers.get('Authorization')?.replace('Bearer ', '');
     if (!token) {
@@ -37,7 +34,7 @@ export async function DELETE(
       );
     }
 
-    const reviewId = Number.parseInt(params.id);
+    const reviewId = Number.parseInt(context.params.id);
 
     if (Number.isNaN(reviewId)) {
       return NextResponse.json(
