@@ -3,10 +3,7 @@ import { query } from '@/lib/db';
 import { getUserFromToken, getTokenFromRequest } from '@/lib/auth';
 
 // DELETE - Eliminar imagen del inicio (solo admin)
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, context: any) {
   try {
     const token = getTokenFromRequest(request);
     const user = getUserFromToken(token);
@@ -18,9 +15,9 @@ export async function DELETE(
       );
     }
 
-    const imageId = Number.parseInt(params.id);
+    const id = Number.parseInt(context.params.id);
 
-    if (isNaN(imageId)) {
+    if (isNaN(id)) {
       return NextResponse.json(
         { error: 'Invalid image ID' },
         { status: 400 }
@@ -30,7 +27,7 @@ export async function DELETE(
     // Verificar que la imagen existe
     const existingImage = await query(
       'SELECT * FROM home_images WHERE id = $1',
-      [imageId]
+      [id]
     );
 
     if (existingImage.rows.length === 0) {
@@ -43,7 +40,7 @@ export async function DELETE(
     // Eliminar la imagen
     await query(
       'DELETE FROM home_images WHERE id = $1',
-      [imageId]
+      [id]
     );
 
     return NextResponse.json({

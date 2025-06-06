@@ -4,7 +4,7 @@ import { getUserFromToken, getTokenFromRequest } from '@/lib/auth';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: any
 ) {
   try {
     const token = getTokenFromRequest(request);
@@ -17,7 +17,7 @@ export async function PATCH(
       );
     }
 
-    const deliveryId = Number.parseInt(params.id);
+    const deliveryId = Number.parseInt(context.params.id);
 
     if (isNaN(deliveryId)) {
       return NextResponse.json(
@@ -57,7 +57,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: any
 ) {
   try {
     const token = getTokenFromRequest(request);
@@ -70,7 +70,7 @@ export async function DELETE(
       );
     }
 
-    const deliveryId = Number.parseInt(params.id);
+    const deliveryId = Number.parseInt(context.params.id);
 
     if (isNaN(deliveryId)) {
       return NextResponse.json(
